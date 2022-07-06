@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Part of the kafka configuration properties structure. Binds values relevant to the consumers.
+ * Part of the kafka configuration properties structure. Binds values relevant to kafka consumers.
  *
  * @author Waldo Terry
  */
