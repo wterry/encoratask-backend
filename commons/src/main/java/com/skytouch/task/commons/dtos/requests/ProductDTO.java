@@ -29,11 +29,13 @@ public class ProductDTO {
     private String description;
 
     //Stock size for the product. Greater than or equal to 0.
-    @Min(value = 0, message = "Inventory size for the product cannot be less than 0.")
+    @Min(value = 0, message = "Inventory stock for the product cannot be less than 0.")
+    @NotNull (message="Inventory stock cannot be null")
     private Integer inventoryStock;
 
     //Price to set for the product. Greater than 1 cent.
     @DecimalMin(value = "0.01", message = "Price ")
+    @NotNull(message = "Product price cannot be null")
     private BigDecimal price;
 }
 

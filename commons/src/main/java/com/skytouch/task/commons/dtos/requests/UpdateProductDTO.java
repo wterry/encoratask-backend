@@ -1,5 +1,6 @@
 package com.skytouch.task.commons.dtos.requests;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateProductDTO {
 
     @NotNull(message = "The product ID is mandatory for a successful update.")
@@ -33,10 +35,12 @@ public class UpdateProductDTO {
     private String description;
 
     //Stock size for the product. Greater than or equal to 0.
-    @Min(value = 0, message = "Inventory size for the product cannot be less than 0.")
+    @Min(value = 0, message = "Inventory stock for the product cannot be less than 0.")
+    @NotNull(message = "Inventory stock cannot be null.")
     private Integer inventoryStock;
 
     //Price to set for the product. Greater than 1 cent.
     @DecimalMin(value = "0.01", message = "Price ")
+    @NotNull(message = "Product price cannot be null.")
     private BigDecimal price;
 }

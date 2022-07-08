@@ -93,7 +93,7 @@ public class KafkaProducerImpl implements Producer {
         replyConsumer.subscribe(Collections.singleton(properties.getConsumers().getReplyTopic()));
 
         //will poll only for 15 secs before returning an error.
-        int i = 150;
+        int i = 50;
         try {
             consumerPoll:
             while (i > 0) {
