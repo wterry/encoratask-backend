@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -43,4 +44,16 @@ public class UpdateProductDTO {
     @DecimalMin(value = "0.01", message = "Price ")
     @NotNull(message = "Product price cannot be null.")
     private BigDecimal price;
+
+    /**
+     * Cleans text inputs, removing potentially malicious tags and limiting the resulting string to a valid size if it's
+     * bigger.
+     */
+    public void sanitizeTextInputs()  {
+        sku = StringEscapeUtils.escapeHtml4(sku);
+        description = StringEscapeUtils.escapeHtml4(description);
+
+        sku = sku.length() > 30? sku.substring(0, 30) : sku;
+        description = description.length() > 100? description.substring(0,100) : description;
+    }
 }

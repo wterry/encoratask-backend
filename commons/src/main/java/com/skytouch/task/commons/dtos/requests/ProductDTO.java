@@ -1,7 +1,8 @@
 package com.skytouch.task.commons.dtos.requests;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
+import org.apache.commons.text.StringEscapeUtils;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -22,9 +23,11 @@ public class ProductDTO {
     constraint was set. Cannot be null.
      */
     @NotNull(message = "SKU cannot be null.")
+    @Length(max = 30, message="SKU only admits 30 characters.")
     private String sku;
 
     @NotNull(message = "Product description cannot be null.")
+    @Length(max = 100, message = "Description only admits 100 characters.")
     //Product description. Must not be null.
     private String description;
 
@@ -37,5 +40,17 @@ public class ProductDTO {
     @DecimalMin(value = "0.01", message = "Price ")
     @NotNull(message = "Product price cannot be null")
     private BigDecimal price;
+
+    /**
+     * Cleans text inputs, removing potentially malicious tags and limiting the resulting string to a valid size if it's
+     * bigger.
+     */
+    public void sanitizeTextInputs()  {
+        sku = StringEscapeUtils.escapeHtml4(sku);
+        description = StringEscapeUtils.escapeHtml4(description);
+
+        sku = sku.length() > 30? sku.substring(0, 30) : sku;
+        description = description.length() > 100? description.substring(0,100) : description;
+    }
 }
 
