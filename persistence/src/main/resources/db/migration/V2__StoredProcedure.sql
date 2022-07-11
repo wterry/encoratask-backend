@@ -11,4 +11,4 @@
             (@RestockAmount - prod.inventoryStock) as missingStock,
             ((@RestockAmount - prod.inventoryStock) * prod.price) as restockPrice
      from Products prod
-     where prod.inventoryStock < 3;
+     where prod.inventoryStock < 6;

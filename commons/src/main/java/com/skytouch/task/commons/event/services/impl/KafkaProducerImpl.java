@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.springframework.context.annotation.Scope;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -28,10 +29,14 @@ import java.util.LinkedHashMap;
  * what process implements this, the specific business data queued into kafka will not change what has to be done to execute
  * that queueing.
  *
+ * Bean scope is changed to prototype to prevent concurrent requests from getting the singleton instance while it is blocked
+ * waiting for a reply response from the reply-topic.
+ *
  * @author Waldo Terry
  */
 @Service
 @Slf4j
+@Scope("prototype")
 public class KafkaProducerImpl implements Producer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -97,10 +102,10 @@ public class KafkaProducerImpl implements Producer {
         try {
             consumerPoll:
             while (i > 0) {
-                log.info("Polling consumer for topic [" + properties.getConsumers().getReplyTopic() + "]");
+//                log.info("Polling consumer for topic [" + properties.getConsumers().getReplyTopic() + "]");
                 ConsumerRecords<String, Object> records = replyConsumer.poll(100);
 
-                log.info("Fetched " + records.count() + "messages");
+//                log.info("Fetched " + records.count() + "messages");
                 for (ConsumerRecord<String, Object> record : records) {
                     log.info("Record value: " + record.value());
 
